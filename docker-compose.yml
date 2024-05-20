@@ -1,0 +1,28 @@
+services:
+  ambeserver:
+    container_name: AMBEserver
+    image: 2e0wat/ambeserver-amd64:latest     # for x86_64 systems
+    # image: 2e0wat/ambeserver-aarch64:latest # for arm64 systems (RPi5)
+    hostname: ambeserver_container
+    networks:
+      ambeserver:
+        ipv4_address: 10.37.1.2
+    ports:
+      - "2460:2460/udp"
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0
+    deploy:
+      resources:
+        limits:
+          memory: 32M
+        reservations:
+          memory: 6M
+    restart: always
+
+networks:
+  ambeserver:
+    name: "ambeserver_network"
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.37.1.0/24
